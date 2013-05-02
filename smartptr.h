@@ -17,17 +17,19 @@ namespace smartptr {
         }
 
         ~TIntrusivePtr() throw() {
-            ptr->UnRef(); 
+            if (!ptr) {
+                ptr->UnRef();
+            } 
         }
 
-        TIntrusivePtr(const TIntrusivePtr& smartprt) : ptr(smartprt.ptr){
+        TIntrusivePtr(const TIntrusivePtr& iPtr) : ptr(iPtr.ptr){
             TCheckingPolicy::Check(ptr); 
             ptr->Ref();
         }
 
-        TIntrusivePtr operator=(const TIntrusivePtr& smartprt) { 
-            if (this != &smartprt) {
-                ptr = smartprt.ptr;
+        TIntrusivePtr operator=(const TIntrusivePtr& iPtr) { 
+            if (this != &iPtr) {
+                ptr = iPtr.ptr;
                 ptr->Ref();
             }
             return *this;
