@@ -32,6 +32,7 @@ namespace smartptr {
         void Destroy() throw() {
             if (!ptr) {
                 TDeletePolicy::Delete(ptr);
+                ptr = 0;
             }
         }
 

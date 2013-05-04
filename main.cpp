@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <exception>
 #include "tholder.h"
 #include "smartptr.h"
 
@@ -119,6 +120,15 @@ int main() {
     Test* newPtr = new Test(1);
     iPtr.Reset(newPtr);
     assert(1 == iPtr->getNum());
+
+    iPtr.Destroy();
+    try {
+        iPtr->getNum();
+    } catch (std::bad_exception& exc) {
+        assert(true);
+    } catch (...) {
+        assert(false);
+    }
 
     THolder<BaseTest> basePtr(new T2(5, 'v'));
     assert(5 == basePtr->getNum());
