@@ -15,11 +15,9 @@ namespace smartptr {
     private:    
         void Ref() throw() { 
             ++counter;
-            printf("ref++ %d\n", counter); 
         }
         void UnRef() throw() { 
             --counter; 
-            printf("ref-- %d\n", counter); 
             if (!counter) {
                 delete this;
             }

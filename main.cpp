@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cassert>
 #include "tholder.h"
 #include "smartptr.h"
 
@@ -18,13 +19,13 @@ struct Test {
         std::cerr << "f " << num << std::endl;
     }
 
-    void msg() {
-        std::cerr << "only msg" << std::endl;
-    }
-
     void exception() {
         std::cerr << "exception" << std::endl;
         throw std::exception();
+    }
+
+    int getNum() const {
+        return num;
     }
 
 private:
@@ -47,6 +48,10 @@ public:
         std::cerr << "BaseTest " << num << std::endl; 
     }
 
+    int getNum() const {
+        return num;
+    }
+
 private:
     BaseTest(const BaseTest&);
     void operator=(const BaseTest&);
@@ -66,6 +71,10 @@ public:
 
     virtual void print() {
         std::cerr << "T2 " << num << " char " << c << std::endl; 
+    }
+
+    char getChar() const {
+        return c;
     }
 
 private:
@@ -91,6 +100,10 @@ public:
         std::cerr << "IntrusiveTest " << num << std::endl; 
     }
 
+    int getNum() const {
+        return num;
+    }
+
 private:
     IntrusiveTest(const IntrusiveTest&);
     void operator=(const IntrusiveTest&);
@@ -101,22 +114,18 @@ private:
 
 int main() {
     THolder<Test, TNullChecking> iPtr(new Test(10));
-    //iPtr.Release();
-    (*iPtr).f();
-    //iPtr->exception();
+    assert(10 == iPtr->getNum());
 
-    void* temp = new Test(1);
-    THolder<void*> voidPtr(&temp);
-
-    ((Test*)*voidPtr)->msg();
-    ((Test*)*voidPtr)->f();
+    Test* newPtr = new Test(1);
+    iPtr.Reset(newPtr);
+    assert(1 == iPtr->getNum());
 
     THolder<BaseTest> basePtr(new T2(5, 'v'));
-    basePtr->print();
+    assert(5 == basePtr->getNum());
 
     TIntrusivePtr<IntrusiveTest> intrusivePtr(new IntrusiveTest(3));
     TIntrusivePtr<IntrusiveTest> intrusivePtr_copy = intrusivePtr;
 
-    intrusivePtr->print();
-    intrusivePtr_copy->print();
+    assert(3 == intrusivePtr->getNum());
+    assert(3 == intrusivePtr_copy->getNum());
 }
