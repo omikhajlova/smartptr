@@ -11,6 +11,11 @@ namespace smartptr {
     public:
         TRefCounted() : counter(1) { }
         virtual ~TRefCounted() { }
+
+        // only for debug
+        int getCounter() const {
+            return counter;
+        }
     
     private:    
         void Ref() throw() { 

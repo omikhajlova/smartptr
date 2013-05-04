@@ -3,7 +3,7 @@ objects = main.o
 CC = g++
 CXX = g++
 
-main: $(objects) tholder.h checking_policy.h delete_policy.h smartptr.h ref_counted.h
+main: $(objects) testobj.h tholder.h checking_policy.h delete_policy.h tintrusive.h ref_counted.h
 
 .PHONY: clean
 clean:

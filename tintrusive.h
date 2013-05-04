@@ -17,7 +17,7 @@ namespace smartptr {
         }
 
         ~TIntrusivePtr() throw() {
-            if (!ptr) {
+            if (ptr) {
                 ptr->UnRef();
             } 
         }
